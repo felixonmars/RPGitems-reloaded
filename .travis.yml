@@ -1,0 +1,27 @@
+language: java
+
+before_deploy:
+- git config --global user.email "builds@travis-ci.com"
+- git config --global user.name "Travis CI"
+- export GIT_TAG=$TRAVIS_BRANCH-v0.1.$TRAVIS_BUILD_NUMBER
+- git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+- git push -q https://$GITHUB_KEY@github.com/felixonmars/RPGitems-reloaded --tags
+
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: fVQ0x9nPrKF47876BaEKp3AGbu572ij7ZS+dT7AXq20PRlJ+7HVyz76PlsG2AxzE5UG0y9YuDfez020T2v2VmQ1K5BaK7mLV1f76/guR4pAb5Ii64UwV90NN0O1/i9MsQhVHRFjfHjbAB0eJIWnBOdMSlp7c9icjKQ/rjYkDwOq2SLRFhGnZgjw9O5KPZdvMMytPFb02zzZ4k4y0oL+O0qEKj9YtDNgK/NxW3YUvSf7a46J14QdxecUYh7pEfZ91Wt/qLQE1izzV8LzOmhMd7aFtv1YfmP6edr7KqtGiHyziSTYoHwh3VwgtJLzolV1IKf4UMGjbQLRNtPl1SMyzdVt2Mt9UCsakzCGCcffK5KBzRQqj3jc99oDqz3figsAoNaIw2wxQaY2UvdBOTUI29glI/JU0+fCZNZInjNThC/h1cIdS4J4u1XxEpbRH+l6nnyGzZSF5k3VpXl78GJRZKvnm6k7/1YT8W2dPEkmjcdyj6VZEzSmTDHx6Wo6xGlw0p698Bh2K2xqPRL1AXR2U/P/ctHOPQZOo1PAJ8/p6B0uyoKLS//KdS5S45NjRdm+8D7zh6bzSwv3ZOYSA9I/t2NFSSegDrNv/pXqxxSclrcLFie+pfJEo9XuqsM7LSGXHLTFW5yHHGa+Pa/idZEMqn4uKr5grRhmmF4niG3tLilg=
+  file:
+  - build/RPGitems-reloaded.jar
+  on:
+    tags: false
+    all_branches: true
+
+branches:
+  except:
+  - "/^*-v[0-9]/"
+
+env:
+  global:
+    secure: epUhTlzo0bmhz+/el2UPxdQU0qthUYXtbxXZMBJTJ2cpxoihm0IGyiMk6SfkfzElE7zAaIjpLZXstxH0KSvbbxadlENoFxUtkHOsnhqMLa+fqpd6pwK1pzFvMDFU9pjCr5P7xwDZ5XXInX/32sBzpqKJOm9nz/qD07esgHFAnkhudTDQ2TL3OIgYLMZeF6rsGrfMZYZBBxz5YIrtmPOXWOn489VWgKEB9FKnFll37XbLed7/sYWDwPnt2m12E9bPE52oPDkr49jekjZkimbeoLKC7Ln1FpzopUS8AfB9HRTHb4/Qs2fsUBAFxyvXeCwXkanwW1Q2YKNKn/LyP1t0J7caFRYdJA7tz7Vbj4SH9We8r53ZXg8MT0EXFDMXbF7XcnxxRPSJRCRHvOnI/4J75tqNDp05zjmfy9ydVWp5oqML01JseycX2/ENdwgAgB7bK25HQE2vddO5gW9snHIroc7PX0KzqpzB1kTbvtut/X+BYpGUmHTK/SCDYidl6QvKwA+DCEV3gNmyqQTK/7NxuTmFmLVQLQThMWmRY2GIhhn8Z01mdWziKot+OSv2k6HISnQwIq54zoUqNWoRuwxEh3xKSPE2S52KZ4QpuN+74M5V1KPFOJTaEnueQf2siSKUgORUCzKd0EMwGunJIQzR5TPU23d7CLxD8vCCtpNqjFo=
